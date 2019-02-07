@@ -1,9 +1,11 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 #include "lua.hpp"
 
 int main()
 {
-
+	srand(time(NULL));
 	//lua types
 
 	//boolean
@@ -27,6 +29,18 @@ int main()
 		//lua_Number is a typedef for a double type
 		lua_Number x = lua_tonumber(L, 1); //1 is the position on the stack that we want to access, so we take the value at postion 1 on the stack
 		std::cout << "Number: " << (int)x << std::endl;
+		
+		for (int i = 1; i < 5; ++i) //push 5 numbers onto the lua stack
+		{
+			auto number = 1 + rand() %20;
+			lua_pushnumber(L, number);
+		}
+
+		for (int i = 1; i < 5; ++i)
+		{
+			auto number = lua_tonumber(L, i); //access position at the stack i and retrieve that number at the position
+			std::cout << "Number at " << i << ": " << (int)number << std::endl;
+		}
 
 
 		lua_close(L); //deallocate the memory that lua allocated for us
