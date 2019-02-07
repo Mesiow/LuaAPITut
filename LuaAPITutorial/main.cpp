@@ -19,7 +19,7 @@ int main()
 
 	{
 
-		//create a new lua state(lua interpreter)
+		/*create a new lua state(lua interpreter)*/
 		lua_State *L = luaL_newstate(); //lua allocates memory itself and returns pointer here
 
 		luaL_dostring(L, "x=22"); //execute some lua code setting the number x to 22
@@ -44,6 +44,36 @@ int main()
 
 
 		lua_close(L); //deallocate the memory that lua allocated for us
+	}
+
+	{
+
+		//R -- raw string
+		const char *lua_file = R"( 
+         function return8()
+               return 8
+         end
+         )";
+			                      
+
+		lua_State *L = luaL_newstate();
+		luaL_dostring(L, lua_file);
+		lua_getglobal(L, "return8"); //push the function onto the stack
+
+		//check if the item at -1 on the stack is a lua function
+		if (lua_isfunction(L, -1)) //-1 allows us to check the last thing that was pushed onto the stack
+		{
+			//if the call to the function does not return zero it is successful
+			if (lua_pcall(L, 0, 1, 0) != 0) //pass in lua state, the number of arguments of your function, the number of return values and pass in an error handler if needed
+				std::cout << "Function call error" << std::endl;
+
+			auto number=lua_tonumber(L, -1); //get last item on the stack
+			std::cout << "Function number: " << (int)number << std::endl;
+		}
+
+
+
+		lua_close(L);
 	}
 
 
