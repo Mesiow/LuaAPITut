@@ -46,7 +46,11 @@ int main()
 	//	lua_close(L); //deallocate the memory that lua allocated for us
 	//}
 
-	run_lua_Function();
+	//run_lua_Function();
+
+
+
+	run_lua_func2();
 
 	std::cin.get();
 	return 0;
